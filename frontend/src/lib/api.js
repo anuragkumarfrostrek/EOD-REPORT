@@ -13,7 +13,10 @@ const request = async (endpoint, options = {}) => {
     ...options.headers,
   };
 
-  const baseUrl = API_URL.replace(/\/$/, '');
+  let baseUrl = API_URL.replace(/\/$/, '');
+  if (!baseUrl.endsWith('/api')) {
+    baseUrl += '/api';
+  }
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
 
   const response = await fetch(`${baseUrl}${cleanEndpoint}`, {
