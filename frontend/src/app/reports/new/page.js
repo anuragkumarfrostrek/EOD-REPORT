@@ -1,11 +1,11 @@
 'use client';
 import { useAuth } from '@/lib/auth';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import ReportForm from '@/components/reports/ReportForm';
 
-export default function NewReportPage() {
+function NewReportContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -48,4 +48,17 @@ export default function NewReportPage() {
   }
 
   return <ReportForm initialData={queryDate ? { report_date: queryDate } : null} />;
+}
+
+export default function NewReportPage() {
+  return (
+    <Suspense fallback={
+      <div className="page-loading" style={{ height: '100vh' }}>
+        <div className="spinner spinner-dark" />
+        <span>Loading...</span>
+      </div>
+    }>
+      <NewReportContent />
+    </Suspense>
+  );
 }
